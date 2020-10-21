@@ -75,6 +75,9 @@ function Main() {
         <FlashMessage messages={state.flashMessages} />
           <NavBar />
           <Switch>
+            <Route path="/notfound">
+              <NotFound />
+            </Route>
             <Route exact path="/">
               {state.loggedIn ? <HomeFeed /> : <Welcome />}
             </Route>

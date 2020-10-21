@@ -16,6 +16,7 @@ import UserProfile from "./components/UserProfile.jsx";
 import Footer from "./components/Footer.jsx";
 import AboutUs from "./components/AboutUs.jsx";
 import Terms from "./components/Terms.jsx";
+import NotFound from "./components/NotFound.jsx";
 import FlashMessage from "./components/FlashMessage.jsx";
 
 // set base URL for API requests
@@ -95,6 +96,9 @@ function Main() {
             </Route>
             <Route path="/terms">
               <Terms />
+            </Route>
+            <Route>
+              <NotFound />
             </Route>
           </Switch>
           <Footer />

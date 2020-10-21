@@ -7,6 +7,7 @@ import StateContext from "../StateContext.jsx";
 import DispatchContext from "../DispatchContext.jsx";
 import Page from "./Page.jsx";
 import AnimatedLoadingIcon from "./AnimatedLoadingIcon.jsx";
+import NotFound from "./NotFound.jsx";
 import UserPosts from "./UserPosts.jsx";
 import ProfileFollowers from "./ProfileFollowers.jsx";
 import ProfileFollowing from "./ProfileFollowing.jsx";
@@ -15,6 +16,7 @@ function UserProfile() {
   const { username } = useParams();
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
+  const [isNotFound, setIsNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [followLoading, setFollowLoading] = useState(false);
   const [profileState, setProfileState] = useImmer({
@@ -33,12 +35,17 @@ function UserProfile() {
         }, {
           cancelToken: req.token
         }).then(res => {
-          setProfileState(draft => {
-            draft.username = res.data.profileUsername;
-            draft.avatar = res.data.profileAvatar;
-            draft.isFollowing = res.data.isFollowing;
-            draft.counts = res.data.counts;
-          });
+          console.log("test");
+          if (res.data) {
+            setProfileState(draft => {
+              draft.username = res.data.profileUsername;
+              draft.avatar = res.data.profileAvatar;
+              draft.isFollowing = res.data.isFollowing;
+              draft.counts = res.data.counts;
+            });
+            console.log("fouind");
+            setIsNotFound(false);
+          } else setIsNotFound(true);          
           setIsLoading(false);
         });
       } catch (error) {
@@ -95,6 +102,8 @@ function UserProfile() {
     }
   }
 
+  if(isNotFound) return <NotFound />
+
   if (isLoading) {
     return (
       <Page title="...">
@@ -102,7 +111,7 @@ function UserProfile() {
       </Page>
     );
   }
-
+  
   return (
     <Page title="Profile">
       <h2>
