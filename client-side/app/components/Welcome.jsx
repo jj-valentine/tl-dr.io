@@ -18,11 +18,25 @@ function Welcome() {
         email,
         password
       }).then(res => {
-        dispatch({ type: "login", value: { username, password } });
-      });
-      dispatch({
-        type: "flashMessage",
-        value: { message: "Howdy Ho Partner! Let's Do This!", alertType: "primary" }
+        return Axios.post("/login", {
+          username,
+          password
+        }).then(res => {
+          if (res.data) {
+            dispatch({ 
+              type: "login", 
+              value: { 
+                token: res.data.token,
+                username: res.data.username,
+                avatar: res.data.avatar
+              } 
+            });
+            dispatch({
+              type: "flashMessage",
+              value: { message: "Howdy Ho Partner! Let's Do This!", alertType: "primary" }
+            });
+          }
+        });
       });
     } catch (error) {
       console.log("Something Went Wrong!", error);

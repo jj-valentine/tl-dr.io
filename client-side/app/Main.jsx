@@ -11,7 +11,7 @@ import Welcome from "./components/Welcome.jsx";
 import HomeFeed from "./components/HomeFeed.jsx";
 import CreatePost from  "./components/CreatePost.jsx";
 import ViewPost from "./components/ViewPost.jsx";
-import EditPost from "./components/EditPost.jsx";
+import EditPostt from "./components/EditPostt.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import Footer from "./components/Footer.jsx";
 import AboutUs from "./components/AboutUs.jsx";
@@ -86,7 +86,7 @@ function Main() {
               <ViewPost />
             </Route>
             <Route exact path="/post/:id/edit">
-              <EditPost />
+              <EditPostt />
             </Route>
             <Route path="/profile/:username">
               <UserProfile />

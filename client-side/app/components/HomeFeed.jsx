@@ -56,11 +56,12 @@ function HomeFeed() {
       { 
         feed.length > 0 && (
           <div className="text-center mb-4">
-            <h3><strong>Recent Posts</strong> (From Those You Follow)</h3>
+            <h2><strong>Updated Feed</strong></h2>
+            <h4> Recent Posts From Those You Follow</h4>
           </div>
         )
       }
-      {feed.map(post => <LinkedPost post={post} key={post["_id"]} /> )}
+      {feed.map(post => <LinkedPost post={post} key={post["_id"]} feed={true} /> )}
     </Page>
   );
 }

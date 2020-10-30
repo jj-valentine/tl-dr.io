@@ -8,12 +8,14 @@ import StateContext from "../StateContext.jsx";
 import DispatchContext from "../DispatchContext.jsx";
 import Page from "./Page.jsx";
 import AnimatedLoadingIcon from "./AnimatedLoadingIcon.jsx";
+import NotFound from "./NotFound.jsx";
 
 function ViewPost() {
   const history = useHistory();
   const { id } = useParams();
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
+  const [isNotFound, setIsNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [formattedDate, setFormattedDate] = useState();
   const [post, setPost] = useState();
@@ -30,6 +32,9 @@ function ViewPost() {
             // format date
             const date = new Date(res.data.createdDate);
             setFormattedDate(`${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`);
+            setIsNotFound(false);
+          } else {
+            setIsNotFound(true);
           }
         });
         setIsLoading(false);
@@ -66,6 +71,8 @@ function ViewPost() {
     } 
   }
 
+  if (isNotFound) return <NotFound />
+  
   // fetching our post is happening asychronously so render will happen first -- thus, we make sure we've received post data before rendering
   if (isLoading) {
     return (
@@ -112,6 +119,13 @@ function ViewPost() {
           allowedTypes={["paragraph", "strong", "emphasis", "text", "heading", "list", "listItem"]} 
         />
       </div>
+
+      <p className="lead text-muted text-center">
+        <Link to={`/profile/${state.user.username}`}>
+          Back to Posts
+        </Link>
+      </p>
+
     </Page>
   );
 }

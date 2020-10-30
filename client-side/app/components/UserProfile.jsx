@@ -35,7 +35,6 @@ function UserProfile() {
         }, {
           cancelToken: req.token
         }).then(res => {
-          console.log("test");
           if (res.data) {
             setProfileState(draft => {
               draft.username = res.data.profileUsername;
@@ -43,7 +42,6 @@ function UserProfile() {
               draft.isFollowing = res.data.isFollowing;
               draft.counts = res.data.counts;
             });
-            console.log("fouind");
             setIsNotFound(false);
           } else setIsNotFound(true);          
           setIsLoading(false);
@@ -112,6 +110,8 @@ function UserProfile() {
     );
   }
   
+  
+
   return (
     <Page title="Profile">
       <h2>
@@ -134,7 +134,7 @@ function UserProfile() {
       </h2>
 
       <div className="profile-nav nav nav-tabs pt-2 mb-4">
-        <NavLink to={`/profile/${username}`} className={"nav-item nav-link"}>
+        <NavLink id="tabb" to={`/profile/${username}`} className={"nav-item nav-link"}>
           Posts: {profileState.counts.postCount}
         </NavLink>
         <NavLink to={`/profile/${username}/followers`} className={"nav-item nav-link"}>
@@ -156,7 +156,9 @@ function UserProfile() {
           <ProfileFollowing />
         </Route>
       </Switch>
+      {console.log(document.getElementsByClassName("nav-item").namedItem("tabb"))}
     </Page>
+
   );
 }
 

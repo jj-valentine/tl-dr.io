@@ -49,7 +49,7 @@ function ProfileFollowing() {
       {
         state.loggedIn && username === state.user.username && following.length === 0 && (
           <p className="lead text-muted text-center">
-            You Are Not Currently Following Anybody!
+            You are not currently following anyone!
           </p>
         ) 
       }
