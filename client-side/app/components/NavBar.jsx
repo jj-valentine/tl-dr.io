@@ -19,7 +19,7 @@ function NavBar() {
             className="text-white">
             blogurt
           </Link>
-          <ReactTooltip id="home" className="custom-tooltip" />
+          <ReactTooltip id="home" border={true} className="custom-tooltip" />
         </h4>
         {state.loggedIn ? <NavLoggedIn  /> : <NavLoggedOut />}
       </div>
