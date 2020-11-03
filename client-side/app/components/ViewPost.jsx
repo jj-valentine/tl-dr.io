@@ -120,9 +120,9 @@ function ViewPost() {
         />
       </div>
 
-      <p className="lead text-muted text-center">
-        <Link to={`/profile/${state.user.username}`}>
-          Back to Posts
+      <p>
+        <Link to={isOwner() ? `/profile/${state.user.username}` : '/'}>
+          Back to {isOwner() ? 'Posts' : 'Feed'}
         </Link>
       </p>
 

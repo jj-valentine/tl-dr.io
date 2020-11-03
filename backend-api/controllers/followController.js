@@ -4,8 +4,8 @@ exports.apiAddFollow = function(req, res) {
   let follow = new Follow(req.params.username, req.apiUser._id)
   follow
     .create()
-    .then(() => {
-      res.json(true)
+    .then(data => {
+      res.json(data)
     })
     .catch(errors => {
       res.json(false)

@@ -63,6 +63,7 @@ function UserProfile() {
       await Axios.post(`/addFollow/${profileState.username}`, {
         token: state.user.token
       }).then(res => {
+        console.log("test", res);
         setProfileState(draft => {
           draft.isFollowing = true;
           draft.counts.followerCount++;
@@ -110,8 +111,6 @@ function UserProfile() {
     );
   }
   
-  
-
   return (
     <Page title="Profile">
       <h2>
@@ -156,9 +155,7 @@ function UserProfile() {
           <ProfileFollowing />
         </Route>
       </Switch>
-      {console.log(document.getElementsByClassName("nav-item").namedItem("tabb"))}
     </Page>
-
   );
 }
 

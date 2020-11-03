@@ -16,17 +16,17 @@ function EditPostt() {
   
   const initialState = {
     title: {
+      previousValue: null,
       value: "",
-      hasErrors: false,
-      message: ""
+      hasErrors: false
     },
     body: {
+      previousValue: null,
       value: "",
-      hasErrors: false,
-      message: ""
+      hasErrors: false
     },
     fetchingPostData: true,
-    updatesSaving: false,
+    canSaveUpdate: true,
     saveCount: 0
   }
 
@@ -34,21 +34,35 @@ function EditPostt() {
     const value = action.value;
     switch(action.type) {
       case "fetchPostComplete":
+        draft.title.previousValue = value.title;
+        draft.body.previousValue = value.body;
         draft.title.value = value.title;
         draft.body.value = value.body;
         draft.fetchingPostData = false;
         break;
       case "editTitle":
+        if (draft.title.previousValue !== value) draft.canSaveUpdate = false;
+        else draft.canSaveUpdate = true;
         draft.title.value = value;
+        if (draft.title.value.trim().length !== 0) draft.title.hasErrors = false;
         break;
       case "editBody":
+        if (draft.body.previousValue !== value) draft.canSaveUpdate = false;
+        else draft.canSaveUpdate = true;
         draft.body.value = value;
+        if (draft.body.value.trim().length !== 0) draft.body.hasErrors = false;
         break;
       case "editPostRequest":
         draft.saveCount++;
         break;
       case "savingPost":
-        draft.updatesSaving =  value;
+        draft.canSaveUpdate = value;
+        break;
+      case "titleValidation":
+        if (value.trim().length === 0) draft.title.hasErrors = true;
+        break;
+      case "bodyValidation":
+        if (value.trim().length === 0) draft.body.hasErrors = true;
         break;
     } 
   }
@@ -108,7 +122,14 @@ function EditPostt() {
 
   function handleEditPost(e) {
     e.preventDefault();
-    postDispatch({ type: "editPostRequest" });
+    if (postState.title.hasErrors || postState.body.hasErrors) {
+      dispatch({ 
+        type: "flashMessage", 
+        value: { message:"Must Fix All Errors Before Saving Updated Post!", alertType: "danger" }
+      });
+    } else {
+      postDispatch({ type: "editPostRequest" });
+    }
   }
 
   if (postState.fetchingPostData) {
@@ -128,9 +149,17 @@ function EditPostt() {
           </label>
           <input autoFocus 
             value={postState.title.value} 
+            onBlur={e => postDispatch({ type: "titleValidation", value: e.target.value })}
             onChange={e => postDispatch({ type: "editTitle", value: e.target.value })} 
             name="title" id="post-title" className="form-control form-control-lg form-control-title" type="text" placeholder="" autoComplete="off" 
           />
+          {
+            postState.title.hasErrors && (
+              <div className="alert alert-danger small liveValidateMessage">
+                Please Add a TITLE to Your Post!
+              </div>
+            )
+          }
         </div>
 
         <div className="form-group">
@@ -139,12 +168,21 @@ function EditPostt() {
           </label>
           <textarea 
             value={postState.body.value} 
+            onBlur={e => postDispatch({ type: "bodyValidation", value: e.target.value })}
             onChange={e => postDispatch({ type: "editBody", value: e.target.value })} 
             name="body" id="post-body" className="body-content tall-textarea form-control" type="text" 
           />
+           {
+            postState.body.hasErrors && (
+              <div className="alert alert-danger small liveValidateMessage">
+                Please Add a BODY to Your Post!
+              </div>
+            )
+          }
         </div>
-        {console.log(postState.updatesSaving)}
-        <button disabled={postState.updatesSaving} className="btn btn-primary">Save Updated Post</button>
+       
+        <button disabled={postState.canSaveUpdate} className="btn btn-primary">Save Updated Post</button>
+        
       </form>
     </Page>
   );

@@ -40,7 +40,7 @@ Follow.prototype.create = function() {
     this.cleanUp()
     await this.validate("create")
     if (!this.errors.length) {
-      await followsCollection.insertOne({followedId: this.followedId, authorId: new ObjectID(this.authorId)})
+      await followsCollection.insertOne({followedId: this.followedId, authorId: new ObjectID(this.authorId), startedFollowing: new Date()})
       resolve()
     } else {
       reject(this.errors)
