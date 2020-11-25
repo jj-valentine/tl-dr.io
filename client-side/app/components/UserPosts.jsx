@@ -61,7 +61,7 @@ function UserPosts() {
           </div>
         )
       } 
-      {posts.map(post => <LinkedPost post={post} key={post["_id"]} feed={false} /> )}
+      {posts.map(post => <LinkedPost post={post} key={post["_id"]} otherAuthor={false} /> )}
     </div>
   );
 }

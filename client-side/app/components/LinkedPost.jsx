@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function LinkedPost({ post, feed }) {
+function LinkedPost({ post, otherAuthor }) {
   const date = new Date(post.createdDate);
   const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   return (
@@ -10,7 +10,7 @@ function LinkedPost({ post, feed }) {
       <span className="text-muted small"> 
         {post.edited ? " Edited " : " Posted "} 
         {
-          feed && (
+          otherAuthor && (
             <span>
               by <strong>{post.author.username}</strong> 
               {" "}

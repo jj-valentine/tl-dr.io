@@ -63,7 +63,6 @@ function UserProfile() {
       await Axios.post(`/addFollow/${profileState.username}`, {
         token: state.user.token
       }).then(res => {
-        console.log("test", res);
         setProfileState(draft => {
           draft.isFollowing = true;
           draft.counts.followerCount++;

@@ -283,15 +283,15 @@ textarea.tall-textarea {
 
 @media (min-width: 700px) {
   .live-search-field {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
 
   .close-live-search {
-    font-size: 3rem;
+    font-size: 1rem;
   }
 
   .search-overlay-icon {
-    font-size: 3rem;
+    font-size: 1rem;
   }
 }
 

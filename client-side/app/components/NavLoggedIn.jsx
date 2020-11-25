@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 // Component(s)
 import StateContext from "../StateContext.jsx";
-import DispatchContext from "../DispatchContext.jsx";
+import DispatchContext from "../DispatchContext.jsx"
 
 function NavLoggedIn() {
   const history = useHistory();
@@ -20,11 +20,18 @@ function NavLoggedIn() {
     history.push('/');
   }
 
+  function handleToggleSearch(e) {
+    e.preventDefault();
+    dispatch({ type: "toggleSearch" });
+  }
+  
   return (
     <div className="flex-row my-3 my-md-0">
-      <a href="#" className="text-white mr-2 header-search-icon">
+      <span onClick={handleToggleSearch} data-tip="Search" data-for="search" className="text-white mr-2 header-search-icon">
         <i className="fas fa-search"></i>
-      </a>{" "}
+      </span>{" "}
+      <ReactTooltip id="search" border={true} className="custom-tooltip" />
+
 
       <span data-tip="Chat" data-for="chat" className="mr-2 header-chat-icon text-white">
         <i className="fas fa-comment"></i>

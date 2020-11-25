@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { useImmerReducer } from "use-immer";
 import Axios from "axios";
@@ -8,13 +8,14 @@ import StateContext from "../StateContext.jsx";
 import DispatchContext from "../DispatchContext.jsx";
 import Page from "./Page.jsx";
 import AnimatedLoadingIcon from "./AnimatedLoadingIcon.jsx";
+import NotFound from "./NotFound.jsx";
 
 function EditPost() {
   const { id } = useParams();
   const history = useHistory();
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
-  
+
   const initialState = {
     title: {
       previousValue: null,
@@ -28,13 +29,16 @@ function EditPost() {
     },
     fetchingPostData: true,
     canSaveUpdate: true,
-    saveCount: 0
+    saveCount: 0,
+    permissionDenied: false,
+    isNotFound: false
   }
 
   function editReducer(draft, action) {
     const value = action.value;
     switch(action.type) {
       case "fetchPostComplete":
+        draft.isNotFound = false;
         draft.title.previousValue = value.title;
         draft.body.previousValue = value.body;
         draft.title.value = value.title;
@@ -65,6 +69,10 @@ function EditPost() {
       case "bodyValidation":
         if (value.trim().length === 0) draft.body.hasErrors = true;
         break;
+      case "invalidId":
+        draft.fetchingPostData = false;
+        draft.isNotFound = true;
+        break;
     } 
   }
 
@@ -77,7 +85,19 @@ function EditPost() {
         await Axios.get(`/post/${id}`, {
           cancelToken: req.token
         }).then(res => { 
-          if (res.data) postDispatch({ type: "fetchPostComplete", value: res.data });
+          if (res.data) {
+            if (res.data.author.username !== state.user.username) {
+              dispatch({ 
+                type: "flashMessage", 
+                value: { message:"Sorry, You Do Not Have Permission to Edit This Post!", alertType: "danger" }
+              });
+              history.push(`/post/${id}`);
+            } else {
+              postDispatch({ type: "fetchPostComplete", value: res.data });
+            }
+          } else {
+            postDispatch({ type: "invalidId" });
+          }
         });
       } catch (error) {
         console.log("Error Fetching Post (Or Request Was Cancelled)!", error);
@@ -133,6 +153,8 @@ function EditPost() {
     }
   }
 
+  if (postState.isNotFound) return <NotFound />
+
   if (postState.fetchingPostData) {
     return (
       <Page title="...">
@@ -140,10 +162,10 @@ function EditPost() {
       </Page>
     );
   }
-
+  
   return (
     <Page title={"Edit Post"}>
-      <form onSubmit={handleEditPost}>
+      <form className="mb-3" onSubmit={handleEditPost}>
         <div className="form-group">
           <label htmlFor="post-title" className="text-muted mb-1">
             <small>Title</small>
@@ -193,6 +215,8 @@ function EditPost() {
           )
         }
       </form>
+
+      <Link to={`/post/${id}`} className="small font-weight-bold">&laquo; View Post</Link>
     </Page>
   );
 }

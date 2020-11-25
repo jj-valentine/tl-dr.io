@@ -61,7 +61,7 @@ function HomeFeed() {
           </div>
         )
       }
-      {feed.map(post => <LinkedPost post={post} key={post["_id"]} feed={true} /> )}
+      {feed.map(post => <LinkedPost post={post} key={post["_id"]} otherAuthor={true} /> )}
     </Page>
   );
 }

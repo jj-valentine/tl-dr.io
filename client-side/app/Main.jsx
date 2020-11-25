@@ -9,6 +9,7 @@ import DispatchContext from "./DispatchContext.jsx";
 import NavBar from "./components/NavBar.jsx";
 import Welcome from "./components/Welcome.jsx";
 import HomeFeed from "./components/HomeFeed.jsx";
+import Search from "./components/Search.jsx";
 import CreatePost from  "./components/CreatePost.jsx";
 import ViewPost from "./components/ViewPost.jsx";
 import EditPost from "./components/EditPost.jsx";
@@ -31,6 +32,11 @@ function Main() {
     },
     loggedIn: Boolean(localStorage.getItem("token")),
     flashMessages: [],
+    search: {
+      isOpen: false,
+      input: "",
+      results: []
+    }
   };
 
   function appReducer(draft, action) {
@@ -44,6 +50,13 @@ function Main() {
         break;
       case "logout": 
         draft.loggedIn = false;
+        break;
+      case "toggleSearch": 
+        draft.search.isOpen = !draft.search.isOpen;
+        break;
+      case "updateSearchData":
+        draft.search.input = value.input;
+        draft.search.results = value.results;
         break;
       case "flashMessage":
         let message = value.message;
@@ -67,6 +80,18 @@ function Main() {
       localStorage.removeItem("token");
     }
   }, [state.loggedIn])
+
+  useEffect(() => {
+    if (!state.search.isOpen && !state.search.results.length) { 
+      dispatch({ 
+        type: "updateSearchData", 
+        value: { 
+          input: "",
+          results: []
+        } 
+      });
+    }
+  }, [state.search.isOpen]);
 
   return (
     <StateContext.Provider value={state}>
@@ -102,6 +127,7 @@ function Main() {
             </Route>
           </Switch>
           <Footer />
+          {state.search.isOpen && <Search />}
         </BrowserRouter>
       </DispatchContext.Provider>
     </StateContext.Provider>

@@ -106,7 +106,7 @@ function ViewPost() {
         <Link to={`/profile/${post.author.username}`}>
           <img className="avatar-tiny" src={post.author.avatar} />
         </Link>
-        {post.edited ? "Edited" : "Posted"} by {" "} 
+        {post.edited ? " Edited" : " Posted"} by {" "} 
         <Link to={`/profile/${post.author.username}`}>
           {post.author.username}
         </Link> 
@@ -120,12 +120,9 @@ function ViewPost() {
         />
       </div>
 
-      <p>
-        <Link to={isOwner() ? `/profile/${state.user.username}` : '/'}>
-          Back to {isOwner() ? 'Posts' : 'Feed'}
-        </Link>
-      </p>
-
+      <Link to={isOwner() ? `/profile/${state.user.username}` : '/'} className="small font-weight-bold">
+        Back to {isOwner() ? 'Posts' : 'Feed'}
+      </Link>
     </Page>
   );
 }
