@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import Axios from "axios";
 import { useImmer } from "use-immer";
 // Component(s)
@@ -12,7 +12,8 @@ function Search() {
   const [searchState, setSearchState] = useImmer({
     input: state.search.input || "",
     results: state.search.results || [],
-    searchRequestCount: 0
+    searchRequestCount: 0,
+    loading: false
   });
 
   useEffect(() => {
@@ -23,16 +24,39 @@ function Search() {
   }, []);
   
   useEffect(() => {
-    const typingTimeout = setTimeout(function startSearching() {
+    let typingTimeout;
+    if (searchState.input.trim() === "") {
       setSearchState(draft => {
-        draft.searchRequestCount++;
-      })
-    }, 2000);
-
-    return () => {
-      clearTimeout(typingTimeout);
-    };
+        draft.results = [];
+        draft.loading = false;
+      });
+    } else if (state.search.input !== searchState.input) {
+        setSearchState(draft => {
+          draft.loading = true;
+        })
+      
+        typingTimeout = setTimeout(function startSearching() {
+          setSearchState(draft => {
+            draft.searchRequestCount++;
+            draft.loading = true;
+          })
+        }, 800);  
+      
+      return () => {
+        clearTimeout(typingTimeout);
+      };
+    }
   }, [searchState.input]);
+
+  useEffect(() => {
+    dispatch({ 
+      type: "updateSearchData", 
+      value: { 
+        input: searchState.input,
+        results: searchState.results
+      } 
+    });
+  }, [searchState.results]);
 
   useEffect(() => {
     if (searchState.searchRequestCount) {
@@ -45,14 +69,17 @@ function Search() {
             cancelToken: req.token  
           }).then(res => {
             setSearchState(draft => {
-              draft.results = res.data
+              draft.results = res.data;
+              draft.loading = false;
             });
           })
         } catch (error) {
           console.log("There Was An Issue Completing Your Search Request!", error);
         }
       }
-      if (searchState.input.trim()) fetchSearchResults();
+
+      if (searchState.input.trim() !== "") fetchSearchResults();
+
       return () => {
         req.cancel();
       };
@@ -73,25 +100,22 @@ function Search() {
   
   function handleToggleSearch(e) {
     e.preventDefault();
-    if (state.search.isOpen) {
-      dispatch({ 
-        type: "updateSearchData", 
-        value: { 
-          input: searchState.input,
-          results: searchState.results
-        } 
-      });
-    }
+    dispatch({ 
+      type: "updateSearchData", 
+      value: { 
+        input: "",
+        results: []
+      } 
+    });
     dispatch({ type: "toggleSearch" });
   }
 
   return (
-    <>
       <div className="search-overlay">
         <div className="search-overlay-top shadow-sm">
           <div className="container container--narrow">
             <label htmlFor="live-search-field" className="search-overlay-icon">
-              <i className="fas fa-search"></i>
+              <i className="fas fa-search search-icon"></i>
             </label>
             <input autoFocus value={searchState.input} onChange={handleTyping} type="text" autoComplete="off" id="live-search-field" className="live-search-field" placeholder={"Search for Posts"} />
             <span onClick={handleToggleSearch} className="close-live-search">
@@ -102,12 +126,13 @@ function Search() {
 
         <div className="search-overlay-bottom">
           <div className="container container--narrow py-3">
-            <div className="live-search-results live-search-results--visible">
+            <div className={"circle-loader" + (searchState.loading ? " circle-loader--visible" : "")}></div>
+            <div className={"live-search-results" + (!searchState.loading ? " live-search-results--visible" : "")}>
               <div className="list-group shadow-sm">
                 {
                   searchState.results.length > 0 && (
-                    <div className="list-group-item active">
-                      <strong>Search Results</strong> ({searchState.results.length} items found)
+                    <div className="list-group-item search-results-header">
+                      <strong>Search Results</strong> ({searchState.results.length} {searchState.results.length > 1 ? "items" : "item"} found)
                     </div>
                   )
                 }
@@ -115,11 +140,13 @@ function Search() {
                   searchState.results.map(post => <LinkedPost post={post} key={post["_id"]} otherAuthor={post.author.username !== state.user.username} />)
                 }
               </div>
+              {
+                !searchState.results.length && searchState.input.trim() !== "" && !searchState.loading && <p className="alert alert-danger text-center shadow-sm">We could not find any posts that match your search query!</p>
+              }
             </div>
           </div>
         </div>
       </div>
-    </>
   );
 }
 

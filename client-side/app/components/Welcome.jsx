@@ -87,7 +87,7 @@ function Welcome() {
               <input onChange={handleFormChange} id="password-register" name="password" className="form-control" type="password" placeholder="Create a password" />
             </div>
             
-            <button type="submit" className="py-3 mt-4 btn btn-lg btn-success btn-signup btn-block">
+            <button type="submit" className="py-3 mt-4 btn btn-lg btn-primary btn-signup btn-block">
               Sign Up
             </button>
           </form>

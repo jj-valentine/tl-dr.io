@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Axios from 'axios';
 import { useImmerReducer } from 'use-immer';
+import { CSSTransition } from "react-transition-group";
 // Component(s)
 import StateContext from "./StateContext.jsx";
 import DispatchContext from "./DispatchContext.jsx";
@@ -127,7 +128,9 @@ function Main() {
             </Route>
           </Switch>
           <Footer />
-          {state.search.isOpen && <Search />}
+          <CSSTransition timeout={350} in={state.search.isOpen} classNames="search-overlay" unmountOnExit>
+            <Search />
+          </CSSTransition>
         </BrowserRouter>
       </DispatchContext.Provider>
     </StateContext.Provider>

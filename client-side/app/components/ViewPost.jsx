@@ -46,7 +46,7 @@ function ViewPost() {
     return () => {
       req.cancel();
     }
-  }, []);
+  }, [id]);
 
   const isOwner = () => state.loggedIn && post.author.username === state.user.username;
 
@@ -93,8 +93,8 @@ function ViewPost() {
                 <i className="fas fa-edit"></i>
               </Link>
               <ReactTooltip id="edit" className="custom-tooltip" /> {" "}
-              <a onClick={handleDeletePost} data-tip="Delete" data-for="delete" className="delete-post-button text-danger">
-                <i className="fas fa-trash"></i>
+              <a onClick={handleDeletePost} data-tip="Delete" data-for="delete" className="delete-post-button">
+                <i className="fas fa-trash delete-post"></i>
               </a>
               <ReactTooltip id="delete" className="custom-tooltip" />
             </span>
@@ -120,7 +120,7 @@ function ViewPost() {
         />
       </div>
 
-      <Link to={isOwner() ? `/profile/${state.user.username}` : '/'} className="small font-weight-bold">
+    <Link to={isOwner() ? `/profile/${state.user.username}` : '/'} className="back-to-link small font-weight-bold">
         Back to {isOwner() ? 'Posts' : 'Feed'}
       </Link>
     </Page>

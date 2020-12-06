@@ -205,7 +205,7 @@ function EditPost() {
         </div>
         
         <div data-tip="Must Alter Post Body OR Title!" data-for="saveUpdatedPost">
-          <button disabled={postState.canSaveUpdate} className="btn btn-primary">
+          <button disabled={postState.canSaveUpdate} className="btn post-button">
             Save Updated Post
           </button>
         </div>
@@ -216,7 +216,7 @@ function EditPost() {
         }
       </form>
 
-      <Link to={`/post/${id}`} className="small font-weight-bold">&laquo; View Post</Link>
+      <Link to={`/post/${id}`} className="back-to-link small font-weight-bold">&laquo; View Post</Link>
     </Page>
   );
 }

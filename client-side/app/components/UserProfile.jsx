@@ -132,13 +132,13 @@ function UserProfile() {
       </h2>
 
       <div className="profile-nav nav nav-tabs pt-2 mb-4">
-        <NavLink id="tabb" to={`/profile/${username}`} className={"nav-item nav-link"}>
+        <NavLink to={`/profile/${username}`} className="nav-item nav-link text-info">
           Posts: {profileState.counts.postCount}
         </NavLink>
-        <NavLink to={`/profile/${username}/followers`} className={"nav-item nav-link"}>
+        <NavLink to={`/profile/${username}/followers`} className="nav-item nav-link text-info">
           Followers: {profileState.counts.followerCount}
         </NavLink>
-        <NavLink to={`/profile/${username}/following`} className={"nav-item nav-link"}>
+        <NavLink to={`/profile/${username}/following`} className="nav-item nav-link text-info">
           Following: {profileState.counts.followingCount}
         </NavLink>
       </div>

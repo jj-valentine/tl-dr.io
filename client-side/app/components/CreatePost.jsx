@@ -63,7 +63,7 @@ function CreatePost() {
           <textarea onChange={handleFormChange} name="body" id="post-body" className="body-content tall-textarea form-control" type="text"></textarea>
         </div>
 
-        <button className="btn btn-primary">Save New Post</button>
+        <button className="btn btn-primary post-button">Save New Post</button>
       </form>
     </Page>
   );
