@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 import Axios from 'axios';
 import { useImmerReducer } from 'use-immer';
 import { CSSTransition } from "react-transition-group";
@@ -11,6 +11,7 @@ import NavBar from "./components/NavBar.jsx";
 import Welcome from "./components/Welcome.jsx";
 import HomeFeed from "./components/HomeFeed.jsx";
 import Search from "./components/Search.jsx";
+import Chat from "./components/Chat.jsx";
 import CreatePost from  "./components/CreatePost.jsx";
 import ViewPost from "./components/ViewPost.jsx";
 import EditPost from "./components/EditPost.jsx";
@@ -37,6 +38,10 @@ function Main() {
       isOpen: false,
       input: "",
       results: []
+    },
+    chat: {
+      isOpen: false,
+      log: JSON.parse(localStorage.getItem("chatLog")) || []
     }
   };
 
@@ -51,9 +56,20 @@ function Main() {
         break;
       case "logout": 
         draft.loggedIn = false;
+        draft.chat.isOpen = false;
         break;
       case "toggleSearch": 
         draft.search.isOpen = !draft.search.isOpen;
+        break;
+      case "toggleChat":
+        draft.chat.isOpen = !draft.chat.isOpen;
+        break;
+      case "newChatMessage":
+        draft.chat.log.push({
+          username: draft.user.username,
+          avatar: draft.user.avatar,
+          text: value
+        });
         break;
       case "updateSearchData":
         draft.search.input = value.input;
@@ -69,6 +85,10 @@ function Main() {
   }
    
   const [state, dispatch] = useImmerReducer(appReducer, initialState);
+
+  useEffect(() => {
+    localStorage.setItem("chatLog", JSON.stringify(state.chat.log));
+  }, [state.chat.log]);
 
   useEffect(() => {
     if (state.loggedIn) {
@@ -131,6 +151,7 @@ function Main() {
           <CSSTransition timeout={350} in={state.search.isOpen} classNames="search-overlay" unmountOnExit>
             <Search />
           </CSSTransition>
+          <Chat />
         </BrowserRouter>
       </DispatchContext.Provider>
     </StateContext.Provider>

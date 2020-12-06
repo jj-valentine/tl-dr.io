@@ -18,6 +18,7 @@ function NavLoggedIn() {
 
   function handleSignOut(e) {
     e.preventDefault();
+    dispatch({ type: "toggleChat" });
     dispatch({ type: "logout" });
     dispatch({ 
       type: "flashMessage", 
@@ -31,6 +32,11 @@ function NavLoggedIn() {
     dispatch({ type: "toggleSearch" });
   }
 
+  function handleToggleChat(e) {
+    e.preventDefault();
+    dispatch({ type: "toggleChat" });
+  } 
+
   return (
     <div className="flex-row my-3 my-md-0">
       
@@ -40,7 +46,7 @@ function NavLoggedIn() {
       <ReactTooltip id="search" border={true} className="custom-tooltip" />
 
 
-      <span data-tip="Chat" data-for="chat" className="mr-2 header-chat-icon text-white" style={{ paddingRight: "8px"}}>
+      <span onClick={handleToggleChat} data-tip="Chat" data-for="chat" className="mr-2 header-chat-icon text-white" style={{ paddingRight: "8px"}}>
         <i className="fas fa-comment nav-icon"></i>
         <span className="chat-count-badge text-white"></span>
       </span>
@@ -55,8 +61,6 @@ function NavLoggedIn() {
         <img className="small-header-avatar" src={state.user.avatar} />
       </Link>
       <ReactTooltip id="profile" border={true} className="custom-tooltip" />
-
-      
       
       <button onClick={handleSignOut} className="btn btn-sm sign-out">
         Sign Out

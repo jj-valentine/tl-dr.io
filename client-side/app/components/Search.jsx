@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Axios from "axios";
 import { useImmer } from "use-immer";
 // Component(s)
@@ -95,10 +95,10 @@ function Search() {
   }
 
   function handleKeyPress(e) {
-    if (e.keyCode === 27) handleToggleSearch(e);
+    if (e.keyCode === 27) handleCloseSearch(e);
   }
   
-  function handleToggleSearch(e) {
+  function handleCloseSearch(e) {
     e.preventDefault();
     dispatch({ 
       type: "updateSearchData", 
@@ -118,7 +118,7 @@ function Search() {
               <i className="fas fa-search search-icon"></i>
             </label>
             <input autoFocus value={searchState.input} onChange={handleTyping} type="text" autoComplete="off" id="live-search-field" className="live-search-field" placeholder={"Search for Posts"} />
-            <span onClick={handleToggleSearch} className="close-live-search">
+            <span onClick={handleCloseSearch} className="close-live-search">
               <i className="fas fa-times-circle"></i>
             </span>
           </div>
