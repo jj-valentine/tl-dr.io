@@ -10,13 +10,15 @@ body {
   color: #1de9b6;
 }
 
+  
 .nav-icon {
   color: white;
 }
-
 .nav-icon:hover {
   color: #1de9b6;
 }
+
+
 
 .create-post {
   color: #6200EA;
@@ -25,13 +27,13 @@ body {
 }
 
 .create-post:hover {
-  color: white;
+  color: #1de9b6;
   border-color: white;
   background: none;
 }
 
 .sign-out {
-  color: #1de9b6;
+  color: #d1ebe4;
   font-weight: bold;
   background-color: #6200EA;
   border-color: #1de9b6;
@@ -94,7 +96,7 @@ body {
   top: 3px;
 }
 
-.chat-count-badge {
+/* .chat-count-badge {
   text-align: center;
   position: absolute;
   top: 2px;
@@ -102,7 +104,34 @@ body {
   width: 16px;
   font-size: 0.6rem;
   font-weight: bold;
+} */
+
+.fa-stack {
+  height: 1em;
+  width: 0em;
 }
+
+.fa-stack[data-count]:after{
+  z-index: 10;
+  position: relative;
+  right: 10px;
+  top: -10px;
+  content: attr(data-count);
+  font-size: 30%;
+  padding-top: .8em;
+  padding-bottom: .8em;
+  padding-right: .9em;
+  padding-left: 1em;
+  margin: 0px;
+  border-radius: 10px;
+  line-height: .75em;
+  color: white;
+  background: rgba(255, 0, 0, .87);
+  text-align: center;
+  min-width: 1.8em;
+  font-weight: bold;
+}
+
 
 .avatar-small {
   width: 32px;

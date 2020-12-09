@@ -41,7 +41,8 @@ function Main() {
     },
     chat: {
       isOpen: false,
-      log: JSON.parse(localStorage.getItem("chatLog")) || []
+      log: JSON.parse(localStorage.getItem("chatLog")) || [],
+      unreadMessageCount: JSON.parse(localStorage.getItem("unreadMessageCount")) || 0
     }
   };
 
@@ -57,6 +58,8 @@ function Main() {
       case "logout": 
         draft.loggedIn = false;
         draft.chat.isOpen = false;
+        draft.chat.log = [];
+        draft.chat.unreadMessageCount = 0;
         break;
       case "toggleSearch": 
         draft.search.isOpen = !draft.search.isOpen;
@@ -64,12 +67,18 @@ function Main() {
       case "toggleChat":
         draft.chat.isOpen = !draft.chat.isOpen;
         break;
-      case "newChatMessage":
+      case "newChatMessage": 
         draft.chat.log.push({
-          username: draft.user.username,
-          avatar: draft.user.avatar,
-          text: value
+          text: value.text,
+          username: value.username,
+          avatar: value.avatar
         });
+        break;
+      case "incrementMessageCount":
+        draft.chat.unreadMessageCount++;
+        break;
+      case "clearMessageCount":
+        draft.chat.unreadMessageCount = 0;
         break;
       case "updateSearchData":
         draft.search.input = value.input;
@@ -83,22 +92,21 @@ function Main() {
         break;
     } 
   }
-   
+  
   const [state, dispatch] = useImmerReducer(appReducer, initialState);
-
-  useEffect(() => {
-    localStorage.setItem("chatLog", JSON.stringify(state.chat.log));
-  }, [state.chat.log]);
 
   useEffect(() => {
     if (state.loggedIn) {
       localStorage.setItem("token", state.user.token);
       localStorage.setItem("username", state.user.username);
       localStorage.setItem("avatar", state.user.avatar);
+      localStorage.setItem("unreadMessageCount", 0);
     } else {
       localStorage.removeItem("username");
       localStorage.removeItem("avatar");
       localStorage.removeItem("token");
+      localStorage.removeItem("chatLog");
+      localStorage.removeItem("unreadMessageCount");
     }
   }, [state.loggedIn])
 
@@ -113,6 +121,15 @@ function Main() {
       });
     }
   }, [state.search.isOpen]);
+
+  useEffect(() => {
+    if (state.chat.log.length) localStorage.setItem("chatLog", JSON.stringify(state.chat.log));
+  }, [state.chat.log]);
+
+  useEffect(() => {
+    // why doesn't count persist after reload when you do JSON.parse(localStorage.getItem("unreadMessageCount")) ???
+    if (state.loggedIn && localStorage.getItem("unreadMessageCount")) localStorage.setItem("unreadMessageCount", state.chat.unreadMessageCount);
+  }, [state.chat.unreadMessageCount]);
 
   return (
     <StateContext.Provider value={state}>

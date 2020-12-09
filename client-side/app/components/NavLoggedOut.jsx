@@ -7,12 +7,10 @@ function NavLoggedOut() {
   const dispatch = useContext(DispatchContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [invalidField, setInvalidField] = useState(false);
   
   async function handleSignIn(e) {
     e.preventDefault()
     if (username.length === 0 || password.length === 0) {
-      setInvalidField(true);
       dispatch({ 
         type: "flashMessage", 
         value: { message: "Please Enter Both Your Username and Password", alertType: "warning" }
