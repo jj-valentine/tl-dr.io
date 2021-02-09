@@ -9,7 +9,6 @@ body {
 .website-name:hover {
   color: #1de9b6;
 }
-
   
 .nav-icon {
   color: white;
@@ -17,8 +16,6 @@ body {
 .nav-icon:hover {
   color: #1de9b6;
 }
-
-
 
 .create-post {
   color: #6200EA;
@@ -111,7 +108,7 @@ body {
   width: 0em;
 }
 
-.fa-stack[data-count]:after{
+.fa-stack-chat[data-count]:after {
   z-index: 10;
   position: relative;
   right: 10px;
@@ -120,15 +117,38 @@ body {
   font-size: 30%;
   padding-top: .8em;
   padding-bottom: .8em;
-  padding-right: .9em;
-  padding-left: 1em;
+  padding-right: 1.1em;
+  padding-left: 1.1em;
   margin: 0px;
   border-radius: 10px;
   line-height: .75em;
   color: white;
-  background: rgba(255, 0, 0, .87);
+  border: 2px solid #6200EA;
+  background: rgba(255, 0, 0, .9);
   text-align: center;
-  min-width: 1.8em;
+  /* width: 50px; */
+  font-weight: bold;
+}
+
+.fa-stack-search[data-count]:after {
+  z-index: 10;
+  position: relative;
+  right: 10px;
+  top: -10px;
+  content: attr(data-count);
+  font-size: 30%;
+  padding-top: .8em;
+  padding-bottom: .8em;
+  padding-right: 1.1em;
+  padding-left: 1.1em;
+  margin: 0px;
+  border-radius: 1000px;
+  line-height: .75em;
+  color: white;
+  border: 2px solid #6200EA;
+  background: rgba(29, 233, 182, 0.9);
+  text-align: center;
+  width: 10px;
   font-weight: bold;
 }
 

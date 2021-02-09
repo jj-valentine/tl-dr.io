@@ -33,13 +33,13 @@ function Search() {
     } else if (state.search.input !== searchState.input) {
         setSearchState(draft => {
           draft.loading = true;
-        })
+        });
       
         typingTimeout = setTimeout(function startSearching() {
           setSearchState(draft => {
             draft.searchRequestCount++;
             draft.loading = true;
-          })
+          });
         }, 800);  
       
       return () => {
@@ -72,7 +72,7 @@ function Search() {
               draft.results = res.data;
               draft.loading = false;
             });
-          })
+          });
         } catch (error) {
           console.log("There Was An Issue Completing Your Search Request!", error);
         }

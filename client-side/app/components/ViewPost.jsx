@@ -115,12 +115,12 @@ function ViewPost() {
 
       <div className="body-content">
         <ReactMarkdown 
-          source={post.body} 
+          children={post.body} 
           allowedTypes={["paragraph", "strong", "emphasis", "text", "heading", "list", "listItem"]} 
         />
       </div>
 
-    <Link to={isOwner() ? `/profile/${state.user.username}` : '/'} className="back-to-link small font-weight-bold">
+      <Link to={isOwner() ? `/profile/${state.user.username}` : '/'} className="back-to-link small font-weight-bold">
         Back to {isOwner() ? 'Posts' : 'Feed'}
       </Link>
     </Page>

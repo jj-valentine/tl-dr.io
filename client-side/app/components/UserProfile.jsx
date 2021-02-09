@@ -100,7 +100,7 @@ function UserProfile() {
     }
   }
 
-  if(isNotFound) return <NotFound />
+  if (isNotFound) return <NotFound />
 
   if (isLoading) {
     return (

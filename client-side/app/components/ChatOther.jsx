@@ -10,8 +10,8 @@ function ChatOther({ message }) {
         <div className="chat-message">
           <div className="chat-message-inner">
             <Link to={`/profile/${message.username}`}>
-              <strong>{message.username}: </strong>
-            </Link>
+              <strong>{message.username}</strong>
+            </Link><strong>: </strong>
             {message.text}
           </div>
         </div>

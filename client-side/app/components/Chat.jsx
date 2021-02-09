@@ -96,24 +96,26 @@ function Chat() {
 
   return (
     <div id="chat-wrapper" className={"chat-wrapper shadow border-top border-left border-right" + (state.chat.isOpen ? " chat-wrapper--is-visible" : "")}>
-    <div className="chat-title-bar bg-primary">
-      Chat
-      <span onClick={handleCloseChat} className="chat-title-bar-close">
-        <i className="fas fa-times-circle"></i>
-      </span>
+      <div className="chat-title-bar bg-primary">
+        Chat
+        <span onClick={handleCloseChat} className="chat-title-bar-close">
+          <i className="fas fa-times-circle"></i>
+        </span>
+      </div>
+      
+      <div id="chat" className="chat-log" ref={chatBoxRef}>
+        {
+          state.chat.log.map((message, i) => message.username === state.user.username ?
+            <ChatSelf key={i} messageText={message.text} /> :
+            <ChatOther key={i} message={message} />
+          )
+        }
+      </div>
+
+      <form onSubmit={handleSubmitMessage} id="chatForm" className="chat-form border-top">
+        <input onChange={handleTyping} value={chatInput} ref={chatInputRef} type="text" className="chat-field" id="chatField" placeholder="Type a message…" autoComplete="off" />
+      </form>
     </div>
-    <div id="chat" className="chat-log" ref={chatBoxRef}>
-      {
-        state.chat.log.map((message, i) => message.username === state.user.username ?
-          <ChatSelf key={i} messageText={message.text} /> :
-          <ChatOther key={i} message={message} />
-        )
-      }
-    </div>
-    <form onSubmit={handleSubmitMessage} id="chatForm" className="chat-form border-top">
-      <input onChange={handleTyping} value={chatInput} ref={chatInputRef} type="text" className="chat-field" id="chatField" placeholder="Type a message…" autoComplete="off" />
-    </form>
-  </div>
   );
 }
 
