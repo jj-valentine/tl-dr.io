@@ -66,7 +66,7 @@ function UserProfile() {
         setProfileState(draft => {
           draft.isFollowing = true;
           draft.counts.followerCount++;
-        })
+        });
         setFollowLoading(false);
         dispatch({
           type: "flashMessage",

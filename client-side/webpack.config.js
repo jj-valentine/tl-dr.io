@@ -13,7 +13,7 @@ module.exports = {
     port: 3000,
     contentBase: path.join(__dirname, "app"),
     hot: true,
-    historyApiFallback: { index: "index.html" }
+    // historyApiFallback: { index: "index.html" }
   },
   module: {
     rules: [
@@ -26,6 +26,17 @@ module.exports = {
             presets: ["@babel/preset-react", ["@babel/preset-env", { targets: { node: "12" } }]]
           }
         }
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // creates `style` nodes from JS strings
+          "style-loader",
+          // translates CSS into CommonJS
+          "css-loader",
+          // compiles SASS to CSS
+          "sass-loader"
+        ]
       }
     ]
   }

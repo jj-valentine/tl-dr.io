@@ -76,6 +76,7 @@ function Chat() {
         text: chatInput,
         token: state.user.token
       });
+
       dispatch({ 
         type: "newChatMessage", 
         value: { 
@@ -84,6 +85,7 @@ function Chat() {
           avatar: state.user.avatar
         }  
       });
+
       setChatInput("");
     }
   }

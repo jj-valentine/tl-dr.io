@@ -10,7 +10,11 @@ app.use("/", require("./router"));
 
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
-  pingTimeout: 30000
+  pingTimeout: 30000,
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
 });
 
 io.on("connection", function (socket) {
@@ -18,8 +22,8 @@ io.on("connection", function (socket) {
     try {
       let user = jwt.verify(data.token, process.env.JWTSECRET);
       socket.broadcast.emit("chatFromServer", { text: sanitizeHTML(data.text, { allowedTags: [], allowedAttributes: {} }), username: user.username, avatar: user.avatar });
-    } catch (e) {
-      console.log("Not a valid token for chat.");
+    } catch (err) {
+      console.log("Chat: Not A Valid Token");
     }
   });
 });
